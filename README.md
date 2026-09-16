@@ -94,3 +94,7 @@ Each run changes a ticket by at most one level. Urgent tickets are unchanged. Se
 cd helpdesk-ticket-system/frontend && npm run build && npm run lint
 cd ../backend && ./venv/bin/python -m compileall -q app
 ```
+
+## Screenshot
+
+![HelpDesk dashboard](helpdesk-ticket-system/frontend/frontend.png)
