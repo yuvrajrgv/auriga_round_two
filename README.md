@@ -56,6 +56,19 @@ npm run dev -- --host 0.0.0.0 --port 5173
 
 Open the Vite URL shown in the terminal. API documentation is available at `/docs`.
 
+## Frontend UI
+
+The frontend is an operations dashboard designed for quick scanning and repeated use. It includes:
+
+- A responsive HelpDesk header with live queue status, manual escalation check, and **New Ticket** action
+- Summary metrics for tickets on the current page, overdue tickets, and urgent tickets
+- A searchable and filterable ticket queue with pagination
+- Clear priority, status, assignee, and response-deadline indicators
+- A modal ticket form with customer, title, description, assignee, priority, and deadline fields
+- Hover states, overdue highlighting, responsive layout, and Escape-key modal closing
+
+The visual direction uses a soft paper-toned background, navy surfaces, coral urgency accents, and amber priority states so important tickets stand out without overwhelming the queue.
+
 ## API
 
 | Method | Path | Description |
