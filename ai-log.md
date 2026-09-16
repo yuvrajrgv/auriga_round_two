@@ -101,7 +101,7 @@ A single run can raise a ticket by only one level. Urgent tickets stay urgent.
 - Added a last-updated time.
 - Added Escape-key modal closing.
 - Added richer hover and disabled states.
-- Added responsive layout refinements.
+- Added responsive layout improvements.
 - Added a navy, coral, amber, and green visual direction.
 - Added a paper-toned atmospheric background.
 - Added animated dashboard entry.
