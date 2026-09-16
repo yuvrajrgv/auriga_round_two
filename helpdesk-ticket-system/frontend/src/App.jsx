@@ -25,6 +25,8 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
+  const [escalating, setEscalating] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
   const fetchTickets = async () => {
     try {
@@ -58,6 +60,7 @@ function App() {
 
       const data = await response.json();
       setTickets(data);
+      setLastUpdated(new Date());
     } catch (err) {
       console.error(err);
       setError(
@@ -71,6 +74,17 @@ function App() {
   useEffect(() => {
     fetchTickets();
   }, [filter, customerSearch, page]);
+
+  useEffect(() => {
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") {
+        setShowModal(false);
+      }
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, []);
 
   const overdueCount = useMemo(() => {
     return tickets.filter(
@@ -136,6 +150,28 @@ function App() {
     }
   };
 
+  const handleRunEscalation = async () => {
+    try {
+      setEscalating(true);
+      setError("");
+
+      const response = await fetch(`${API_BASE_URL}/tickets/escalate-overdue`, {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to run the escalation check.");
+      }
+
+      await fetchTickets();
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    } finally {
+      setEscalating(false);
+    }
+  };
+
   const isOverdue = (deadline) => {
     return new Date(deadline) < new Date();
   };
@@ -182,42 +218,66 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900">
-      <header className="border-b border-slate-200 bg-white">
+    <div className="app-shell min-h-screen text-slate-900">
+      <header className="app-header border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">HelpDesk</h1>
+          <div className="brand-lockup">
+            <div className="brand-mark">H</div>
+            <div>
+              <p className="eyebrow">Operations console</p>
+              <h1 className="text-2xl font-bold tracking-tight">HelpDesk</h1>
             <p className="mt-1 text-sm text-slate-500">
               Smart ticket prioritization and queue management
             </p>
+            </div>
           </div>
 
-          <button
-            onClick={() => setShowModal(true)}
-            className="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
-          >
-            + New Ticket
-          </button>
+          <div className="header-actions">
+            <span className="live-indicator"><span /> Live queue</span>
+            <button
+              onClick={handleRunEscalation}
+              disabled={escalating}
+              className="secondary-button"
+            >
+              {escalating ? "Checking..." : "Run check"}
+            </button>
+            <button
+              onClick={() => setShowModal(true)}
+              className="primary-button"
+            >
+              <span>+</span> New Ticket
+            </button>
+          </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-6 py-6">
+      <main className="app-main mx-auto max-w-7xl px-6 py-6">
+        <div className="intro-row">
+          <div>
+            <p className="eyebrow">Tuesday, September 16, 2026</p>
+            <h2 className="page-title">Keep every response on track.</h2>
+          </div>
+          <p className="sync-note">
+            {lastUpdated ? `Updated ${lastUpdated.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : "Syncing queue..."}
+          </p>
+        </div>
+
         <div className="mb-6 grid gap-4 md:grid-cols-3">
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="metric-card metric-card-dark rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm font-medium text-slate-500">
               Tickets on Page
             </p>
             <p className="mt-2 text-3xl font-bold">{tickets.length}</p>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="metric-card rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm font-medium text-slate-500">Overdue</p>
             <p className="mt-2 text-3xl font-bold text-red-600">
               {overdueCount}
             </p>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="metric-card rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm font-medium text-slate-500">Urgent</p>
             <p className="mt-2 text-3xl font-bold text-orange-600">
               {urgentCount}
@@ -225,7 +285,7 @@ function App() {
           </div>
         </div>
 
-        <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <section className="queue-panel overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
           <div className="border-b border-slate-200 p-5">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
@@ -302,7 +362,7 @@ function App() {
                 {tickets.map((ticket) => (
                   <div
                     key={ticket.id}
-                    className="p-5 transition hover:bg-slate-50"
+                    className="ticket-row p-5 transition hover:bg-slate-50"
                   >
                     <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                       <div className="min-w-0 flex-1">

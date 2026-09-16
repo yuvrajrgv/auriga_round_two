@@ -1,1 +1,238 @@
 @import "tailwindcss";
+
+:root {
+	font-family: "Avenir Next", "Trebuchet MS", sans-serif;
+	color: #18212b;
+	background: #edf1f0;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-width: 320px;
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+}
+
+button {
+	cursor: pointer;
+}
+
+.app-shell {
+	background:
+		radial-gradient(circle at 10% 0%, rgba(255, 213, 187, 0.32), transparent 27rem),
+		linear-gradient(135deg, #f5f4ef 0%, #e9f0ef 100%);
+}
+
+.app-header {
+	background: rgba(255, 255, 255, 0.72) !important;
+	backdrop-filter: blur(16px);
+}
+
+.brand-lockup,
+.header-actions,
+.intro-row {
+	display: flex;
+	align-items: center;
+}
+
+.brand-lockup {
+	gap: 12px;
+}
+
+.brand-mark {
+	display: grid;
+	width: 42px;
+	height: 42px;
+	place-items: center;
+	border-radius: 12px;
+	color: #fffaf2;
+	background: #172a3a;
+	box-shadow: 5px 5px 0 #ed765c;
+	font-size: 21px;
+	font-weight: 800;
+}
+
+.eyebrow {
+	margin: 0 0 3px;
+	color: #e5684e;
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.header-actions {
+	gap: 10px;
+}
+
+.live-indicator,
+.sync-note {
+	color: #64717b;
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.live-indicator {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	margin-right: 5px;
+}
+
+.live-indicator span {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: #55aa78;
+	box-shadow: 0 0 0 4px rgba(85, 170, 120, 0.15);
+}
+
+.primary-button,
+.secondary-button {
+	border: 1px solid transparent;
+	border-radius: 9px;
+	padding: 10px 14px;
+	font-size: 12px;
+	font-weight: 800;
+	transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.primary-button {
+	color: #fff;
+	background: #172a3a;
+	box-shadow: 0 5px 0 #0e1d2a;
+}
+
+.primary-button span {
+	margin-right: 5px;
+	color: #f28a70;
+	font-size: 16px;
+	line-height: 0;
+}
+
+.secondary-button {
+	border-color: #ccd6d4;
+	color: #30434e;
+	background: rgba(255, 255, 255, 0.68);
+}
+
+.primary-button:hover,
+.secondary-button:hover {
+	transform: translateY(-2px);
+}
+
+.primary-button:hover {
+	background: #233c50;
+	box-shadow: 0 7px 0 #0e1d2a;
+}
+
+.secondary-button:hover {
+	background: #fff;
+	box-shadow: 0 5px 12px rgba(23, 42, 58, 0.08);
+}
+
+.primary-button:disabled,
+.secondary-button:disabled {
+	cursor: wait;
+	opacity: 0.6;
+}
+
+.app-main {
+	animation: rise-in 500ms ease both;
+}
+
+.intro-row {
+	justify-content: space-between;
+	margin-bottom: 22px;
+}
+
+.page-title {
+	margin: 0;
+	color: #172a3a;
+	font-size: clamp(1.35rem, 2vw, 1.8rem);
+	letter-spacing: -0.02em;
+}
+
+.metric-card {
+	border-color: #dce4e1 !important;
+	box-shadow: 0 8px 20px rgba(35, 57, 66, 0.06) !important;
+	transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.metric-card:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 13px 25px rgba(35, 57, 66, 0.1) !important;
+}
+
+.metric-card-dark {
+	color: #fff;
+	border-color: #172a3a !important;
+	background: #172a3a !important;
+}
+
+.metric-card-dark p:first-child {
+	color: #afc1c8 !important;
+}
+
+.queue-panel {
+	border-color: #dce4e1 !important;
+	box-shadow: 0 14px 30px rgba(35, 57, 66, 0.08) !important;
+}
+
+.ticket-row {
+	border-left: 3px solid transparent;
+	transition: background 180ms ease, border-color 180ms ease, padding-left 180ms ease;
+}
+
+.ticket-row:hover {
+	border-left-color: #ed765c;
+	padding-left: 22px;
+}
+
+[class*="rounded-full"] {
+	letter-spacing: 0.04em;
+}
+
+@keyframes rise-in {
+	from { opacity: 0; transform: translateY(8px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 720px) {
+	.app-header > div,
+	.app-main {
+		padding-right: 18px;
+		padding-left: 18px;
+	}
+
+	.app-header > div {
+		align-items: flex-start;
+		gap: 18px;
+	}
+
+	.header-actions {
+		flex-wrap: wrap;
+		justify-content: flex-end;
+	}
+
+	.live-indicator {
+		display: none;
+	}
+
+	.intro-row {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 6px;
+	}
+}
