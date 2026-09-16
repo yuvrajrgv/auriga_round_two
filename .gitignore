@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+
+helpdesk-ticket-system/backend/venv/
+helpdesk-ticket-system/frontend/node_modules/
+helpdesk-ticket-system/frontend/dist/
