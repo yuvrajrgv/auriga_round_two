@@ -149,6 +149,10 @@ function App() {
       return "bg-orange-100 text-orange-700";
     }
 
+    if (ticket.priority?.toLowerCase() === "high") {
+      return "bg-amber-100 text-amber-700";
+    }
+
     return "bg-yellow-100 text-yellow-700";
   };
 
@@ -479,6 +483,7 @@ function App() {
                     className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500"
                   >
                     <option value="normal">Normal</option>
+                    <option value="high">High</option>
                     <option value="urgent">Urgent</option>
                   </select>
                 </div>

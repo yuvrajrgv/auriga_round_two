@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
+from app.escalation import escalate_overdue_tickets
 from app.models import Ticket
 from app.schemas import TicketCreate, TicketResponse
 
@@ -31,6 +32,12 @@ def create_ticket(
     db.refresh(new_ticket)
 
     return new_ticket
+
+
+@router.post("/escalate-overdue")
+def run_overdue_escalation(db: Session = Depends(get_db)):
+    escalated_count = escalate_overdue_tickets(db)
+    return {"escalated_count": escalated_count}
 
 
 @router.get("/", response_model=list[TicketResponse])
